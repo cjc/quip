@@ -238,6 +238,7 @@ exports.haml = function(test){
 return 'success';
 }}}
 );
+    res.loadView = function(path){return "";};
     res.send = function(data){
         test.equals(data, 'success');
         test.equals(res._status, 200);
