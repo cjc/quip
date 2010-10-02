@@ -1,4 +1,4 @@
-var quip = require('quip');
+var quip = require('quip'), sys = require('sys');
 
 
 exports.status = function(test){
@@ -231,3 +231,21 @@ exports.filter = function(test){
     quip.update = _update;
     test.done();
 };
+
+exports.haml = function(test){
+    test.expect(4);
+    var res = quip.update({},{'.haml':{render:function(str,options){
+return 'success';
+}}}
+);
+    res.send = function(data){
+        test.equals(data, 'success');
+        test.equals(res._status, 200);
+        test.same(res._headers, {'Content-Type':'text/html'});
+    };
+    var r = res.render('index.haml',{locals:{title:'test title'}}
+);
+    test.equals(r, null); //should not allow further chaining
+    test.done();
+};
+
